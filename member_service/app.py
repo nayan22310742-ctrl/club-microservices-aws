@@ -13,7 +13,8 @@ def add_member():
     data = request.json
     member = {
         "id": len(members) + 1,
-        "name": data.get("name")
+        "name": data.get("name"),
+        "email": data.get("email")
     }
     members.append(member)
     return jsonify(member), 201

@@ -1,9 +1,226 @@
-<h1>Club Management System</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Campus Club Management System — A microservices-based platform to manage clubs, members, and events." />
+    <title>CampusClub Manager — Microservices Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
 
-<!-- Add simple fetch call in frontend -->
-<!-- Add API connection for club api -->
+    <!-- ═══════════ Floating Orbs Background ═══════════ -->
+    <div class="bg-orbs" aria-hidden="true">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
 
-<!-- Change done -->
-<!-- Fixed typo -->
-<!-- Small update -->
-<!-- Final final Fix -->
+    <!-- ═══════════ Header ═══════════ -->
+    <header id="app-header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                        <circle cx="9" cy="7" r="4"/>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                    </svg>
+                </div>
+                <h1>CampusClub<span class="accent">Manager</span></h1>
+            </div>
+            <div class="health-indicators" id="health-indicators">
+                <div class="health-dot" id="health-club" title="Club Service (5001)">
+                    <span class="dot"></span>
+                    <span class="label">Clubs</span>
+                </div>
+                <div class="health-dot" id="health-member" title="Member Service (5002)">
+                    <span class="dot"></span>
+                    <span class="label">Members</span>
+                </div>
+                <div class="health-dot" id="health-event" title="Event Service (5003)">
+                    <span class="dot"></span>
+                    <span class="label">Events</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ═══════════ Tab Navigation ═══════════ -->
+    <nav id="tab-nav">
+        <div class="tab-bar">
+            <button class="tab active" data-tab="clubs" id="tab-btn-clubs">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                    <polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+                Clubs
+            </button>
+            <button class="tab" data-tab="members" id="tab-btn-members">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
+                </svg>
+                Members
+            </button>
+            <button class="tab" data-tab="events" id="tab-btn-events">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                    <line x1="16" y1="2" x2="16" y2="6"/>
+                    <line x1="8" y1="2" x2="8" y2="6"/>
+                    <line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+                Events
+            </button>
+        </div>
+    </nav>
+
+    <!-- ═══════════ Main Content ═══════════ -->
+    <main id="main-content">
+
+        <!-- ────── Clubs Panel ────── -->
+        <section class="panel active" id="panel-clubs">
+            <div class="panel-header">
+                <div>
+                    <h2>Clubs</h2>
+                    <p class="subtitle">Manage campus clubs and organizations</p>
+                </div>
+                <span class="badge" id="clubs-count">0</span>
+            </div>
+
+            <form class="create-form glass-card" id="form-club">
+                <h3>Create New Club</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="club-name">Club Name *</label>
+                        <input type="text" id="club-name" placeholder="e.g. Robotics Club" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="club-category">Category</label>
+                        <select id="club-category">
+                            <option value="General">General</option>
+                            <option value="Technical">Technical</option>
+                            <option value="Cultural">Cultural</option>
+                            <option value="Sports">Sports</option>
+                            <option value="Literary">Literary</option>
+                        </select>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="club-desc">Description</label>
+                        <input type="text" id="club-desc" placeholder="A short description of the club" />
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" id="btn-create-club">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    Create Club
+                </button>
+            </form>
+
+            <div class="cards-grid" id="clubs-list">
+                <div class="empty-state">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    <p>No clubs yet. Create your first club above!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ────── Members Panel ────── -->
+        <section class="panel" id="panel-members">
+            <div class="panel-header">
+                <div>
+                    <h2>Members</h2>
+                    <p class="subtitle">Manage club memberships</p>
+                </div>
+                <span class="badge" id="members-count">0</span>
+            </div>
+
+            <form class="create-form glass-card" id="form-member">
+                <h3>Add New Member</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="member-name">Full Name *</label>
+                        <input type="text" id="member-name" placeholder="e.g. John Doe" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="member-email">Email *</label>
+                        <input type="email" id="member-email" placeholder="e.g. john@campus.edu" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="member-club">Club ID (optional)</label>
+                        <input type="number" id="member-club" placeholder="e.g. 1" min="1" />
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" id="btn-create-member">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    Add Member
+                </button>
+            </form>
+
+            <div class="cards-grid" id="members-list">
+                <div class="empty-state">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    <p>No members yet. Add your first member above!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ────── Events Panel ────── -->
+        <section class="panel" id="panel-events">
+            <div class="panel-header">
+                <div>
+                    <h2>Events</h2>
+                    <p class="subtitle">Schedule and manage club events</p>
+                </div>
+                <span class="badge" id="events-count">0</span>
+            </div>
+
+            <form class="create-form glass-card" id="form-event">
+                <h3>Create New Event</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="event-title">Event Title *</label>
+                        <input type="text" id="event-title" placeholder="e.g. Annual Hackathon" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="event-date">Date</label>
+                        <input type="date" id="event-date" />
+                    </div>
+                    <div class="form-group">
+                        <label for="event-club">Club ID (optional)</label>
+                        <input type="number" id="event-club" placeholder="e.g. 1" min="1" />
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="event-desc">Description</label>
+                        <input type="text" id="event-desc" placeholder="A short description of the event" />
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" id="btn-create-event">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    Create Event
+                </button>
+            </form>
+
+            <div class="cards-grid" id="events-list">
+                <div class="empty-state">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                    <p>No events yet. Create your first event above!</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ═══════════ Toast Container ═══════════ -->
+    <div id="toast-container"></div>
+
+    <!-- ═══════════ Footer ═══════════ -->
+    <footer id="app-footer">
+        <p>CampusClub Manager &middot; Flask Microservices on AWS &middot; Cloud Computing Mini Project</p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
